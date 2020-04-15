@@ -1,8 +1,7 @@
 console.log("Bot has been started!")
 const TelegramBot = require ("node-telegram-bot-api"); // node js зависимость
 const TOKEN = "894771621:AAGbHb3xWCOjen98whdxLcxSlhn4WFND9ho";
-const debug = require ("./helpers")
-/*  Polling - технология для связи клиента с сервером.
+const debug = require ("./helpers")/*  Polling - технология для связи клиента с сервером.
     Мы как клиент запускаем на сервере тг. сервис который ожидает обновлений*/
 const bot = new TelegramBot (TOKEN, {
    polling: {
@@ -14,12 +13,14 @@ const bot = new TelegramBot (TOKEN, {
    }
 })
 
-bot.on ("message", (msg) => {// bot.on - прослушка события (а именно message. msg это Callback. => стрелочная ф-я
-    const {id} = msg.chat
-    console.log(msg);
-    // первое бот понимает в какой чат нужно отпр. сообщ. JSON.stringify() преобразует значение JavaScript в строку JSON
-    bot.sendMessage(id, debug(msg))
+// экранируем "/" любой команды
+bot.onText (/\/start/,msg => { // для экранирования слэша в рег. выражении нужно писать обратный слэш
+    const {id} = msg.chat // создаём объект ид
+    bot.sendMessage(id, debug(msg)) // отправляем по ид сообщение дэбага на запрос /start
+})
 
-    if (msg.text.toLowerCase() === "hello") {bot.sendMessage(id, "Hello, "+ msg.from.first_name)}
-    else {bot.sendMessage(id,debug(msg))}
+bot.onText (/\help (.+)/, (msg, [sourse,match]) => { // (.+) значит что мы получаем некоторый остаток.
+    // [sourse] - первый элем. масива, т.е. команда. [match] второй, т.е. сам текст
+    const {id} = msg.chat;
+    bot.sendMessage(id, debug(match)); // можно было написать не match, a [1], т.е. первый элем масива
 })
