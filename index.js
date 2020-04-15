@@ -13,14 +13,26 @@ const bot = new TelegramBot (TOKEN, {
    }
 })
 
-// экранируем "/" любой команды
-bot.onText (/\/start/,msg => { // для экранирования слэша в рег. выражении нужно писать обратный слэш
-    const {id} = msg.chat // создаём объект ид
-    bot.sendMessage(id, debug(msg)) // отправляем по ид сообщение дэбага на запрос /start
-})
+// Парсинг HTML and Markdown
 
-bot.onText (/\help (.+)/, (msg, [sourse,match]) => { // (.+) значит что мы получаем некоторый остаток.
-    // [sourse] - первый элем. масива, т.е. команда. [match] второй, т.е. сам текст
-    const {id} = msg.chat;
-    bot.sendMessage(id, debug(match)); // можно было написать не match, a [1], т.е. первый элем масива
-})
+bot.on ("message", msg=> {
+
+    const markdown = `
+            _Exemple of markdown:_
+            [Markdown Style](https://core.telegram.org/bots/api#markdown-style)
+            `
+    bot.sendMessage(msg.chat.id,markdown, {
+        parse_mode: "Markdown"
+    })
+    
+    const html =`<strong>Hello, ${msg.from.first_name}</strong>
+    <em>HTML Style:</em>
+    <a href="https://core.telegram.org/bots/api#html-style">HTML style in Telegram</a>
+    <pre>
+        ${debug(msg)}
+    </pre>
+    `
+        bot.sendMessage(msg.chat.id, html, {
+            parse_mode: "HTML"
+        })
+            })
