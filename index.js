@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api'); // node js зависимость
 const TOKEN = '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo'
-const bot = new TelegramBot(TOKEN, {
+const bot = new TelegramBot(TOKEN, { //объект на который мы можем навешивать наши обработчики событий.
     polling: {
         interval: 300, // мил.сек. будет проходить между запросами клиента на сервер
         autoStart: true, // если юзер давал команду, но бот был выключен, тогда при включении бот обработает команду
@@ -10,12 +10,38 @@ const bot = new TelegramBot(TOKEN, {
     }
 });
 const debug = require("./helpers")/*  Polling - технология для связи клиента с сервером. Мы как клиент запускаем на сервере тг. сервис который ожидает обновлений*/
-
+bot.on("polling_error", (errors) => console.log(errors)); // выводим в консоль ошибки обращения бота к апи телеграм
 
 let search = {value: "/search", text: "🔎 Поиск"}
 let setting = {value: "setting", text: "⚙ Настройки"}
 let profile = {value: "/profile", text: "👤 Профиль"}
 let popular = {value: "popular", text: "🌟 Популярные"}
+
+bot.onText((/\/start/), (msg) => {
+    const userId = msg.chat.id;// экранируем /start & /go
+    const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
+    bot.sendMessage(userId, greeting, mainMenu)
+})
+
+bot.onText(/👤 Профиль/, (msg) => {
+    const userId = msg.chat.id;
+    bot.sendMessage(userId, 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', profileMenu)
+})
+
+bot.onText(/🔎 Поиск/, (msg) => {
+    const userId = msg.chat.id;
+    bot.sendMessage(userId, 'Выберите язык на котором будем искать исполнителя', searchMenu)
+})
+
+bot.onText(/🌟 Популярное/, (msg) => {
+    const userId = msg.chat.id;
+    bot.sendMessage(userId, 'Часто запрашиваемые дискографии:', popularMenu)
+})
+
+bot.onText(/⚙ Настройки/, (msg) => {
+    const userId = msg.chat.id;
+    bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
+})
 
 const mainMenu = {
     reply_markup: {
@@ -31,7 +57,7 @@ const profileMenu = {
             [
                 {
                     text: '👑 Премиум аккаунт',
-                    callback_data: "" // вместо callback_data можно юзать url: 
+                    callback_data: "2" // вместо callback_data можно юзать url:
                 },
                 {
                     text: '👥 Реферальная система',
@@ -47,13 +73,13 @@ const profileMenu = {
         ]
     }
 }
-const shearchMenu = {
+const searchMenu = {
     reply_markup: {
         inline_keyboard: [
             [
                 {
                     text: '🇬🇧 EN',
-                    callback_data: '1'
+                    url: 'http://t.me/joinchat/AAAAAErGMIW9y511Zfs-lw'
                 },
                 {
                     text: '🇷🇺 RU',
@@ -374,31 +400,6 @@ const alphabetEN = {
 }
 
 
-bot.onText((/\/start/), (msg) => {
-    const userId = msg.chat.id;// экранируем /start & /go
-    const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
-    bot.sendMessage(userId, greeting, mainMenu)
-})
-
-bot.onText(/👤 Профиль/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', profileMenu)
-})
-
-bot.onText(/🔎 Поиск/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Выберите язык на котором будем искать исполнителя', shearchMenu)
-})
-
-bot.onText(/🌟 Популярное/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Часто запрашиваемые дискографии:', popularMenu)
-})
-
-bot.onText(/⚙ Настройки/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
-})
 
 
 
@@ -450,25 +451,7 @@ bot.sendMessage(chatId, 'На каком языке ищем?', {
 });
 
 
-// Задём инлайн кнопку при вызове кнопки "Поиск"
-if (msg.text === "🔍 Поиск исполнителя" ) {
-    bot.sendMessage (chatId, "Keyboard", {
-        reply_markup: {
-            inline_keyboard: [
-                ['A', 'B']]}})
 
-
-bot.sendMessage (chatId, "Keyboard", {
-    reply_markup:{
-        keyboard: [
-            ['🔍 Поиск исполнителя']
-            ['🐶 Профиль','⚙️Настройки'],
-             ]}})
-
-
-             inline_keyboard: [
-                ['A', 'B'],
-                ['A2','B2']
 })
 /*
 bot.on("inline_query",query => {
@@ -486,9 +469,6 @@ bot.on("inline_query",query => {
         })
     }
 
-    bot.answerInlineQuery(query.id, results, {
-        cache_time: 0
-    })
 */
 
 
