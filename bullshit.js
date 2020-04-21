@@ -1,4 +1,54 @@
 /*
+const inlineMenu = [
+    {
+        title: '👤 Профиль:',
+        buttons: [
+            [{
+                text: '👑 Премиум аккаунт',
+                callback_data: "1_1" // вместо callback_data можно юзать url:
+            }],
+            [{
+                text: '👥 Реферальная система',
+                callback_data: '1_2'
+            }],
+            [{
+                text: '⭐ Избранные дискографии',
+                callback_data: '1_3'
+            }]
+
+        ]
+    },
+    {
+        title: '🔎 Выберите язык на котором будем искать исполнителя:',
+        buttons: [
+            [{
+                text: 'EN',
+                callback_data: '2_1'
+            }],
+            [{
+                text: 'RU',
+                callback_data: '2_2'
+            }]
+        ]
+    }
+]
+
+bot.on('collback_query',query => {
+    const {chat, message_id, text} = query.message
+    const userId = msg.chat.id;
+
+    switch (query.data) {
+        case 'EN':
+            bot.sendMessage(userId,alphabetEN)
+            break
+    }
+
+
+    bot.answerCallbackQuery({
+        callback_query_id: query.id
+    })
+})
+
 bot.onText(/\/start (.+)/, (msg,[greeting]) => {
     const {chat: {id}} = msg
 
@@ -15,8 +65,7 @@ bot.onText(/\/start (.+)/, (msg,[greeting]) => {
             }
         })
     })
-}) */
-
+})
 
 bot.sendMessage(chatId, 'На каком языке ищем?', {
 reply_markup: {
@@ -34,10 +83,9 @@ reply_markup: {
         ]
     ]
 }
-})
-});
 
-/*
+
+
 // Задём инлайн кнопку при вызове кнопки "Поиск"
 if (msg.text === "🔍 Поиск исполнителя" ) {
     bot.sendMessage (chatId, "Keyboard", {
@@ -77,4 +125,8 @@ bot.on("inline_query",query => {
     bot.answerInlineQuery(query.id, results, {
         cache_time: 0
     })
+
+
+
+
 }) */

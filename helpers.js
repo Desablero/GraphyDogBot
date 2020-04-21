@@ -1,3 +1,4 @@
+module.exports = debug
 function debug(obj = {}) {
     return JSON.stringify(obj,null,4)
     /*метод replace() выполняет внутри строки поиск с использованием регулярного выражения (объект RegExp),
@@ -7,4 +8,3 @@ function debug(obj = {}) {
     Если флаг g не используется, то метод replace() осуществляет замену только первого совпадения.*/
 }
 
-module.exports = debug
