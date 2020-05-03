@@ -1,0 +1,3 @@
+module.exports = {
+    TOKEN: '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo'
+}

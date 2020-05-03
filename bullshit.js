@@ -1,4 +1,54 @@
 /*
+bot.onText((/\/start/i))) {(msg) => {
+        const userId = msg.chat.id;
+        const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
+        bot.sendMessage(userId, greeting, mainMenu)
+    }} else if (
+
+    bot.onText(/👤 Профиль/i, (msg) => {
+        const userId = msg.chat.id;
+        bot.sendMessage(userId, 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', profileMenu)
+    }) ) else if (
+
+    bot.onText(/🔎 Поиск/i, (msg) => {
+        const userId = msg.chat.id;
+        bot.sendMessage(userId, 'Выберите язык на котором будем искать исполнителя', searchMenu)
+    })) else if (
+
+    bot.onText(/🌟 Популярное/i, (msg) => {
+        const userId = msg.chat.id;
+        bot.sendMessage(userId, 'Часто запрашиваемые дискографии:', popularMenu)
+    })) else if (
+
+    bot.onText(/⚙ Настройки/i, (msg) => {
+        const userId = msg.chat.id;
+        bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
+    })) else if (
+
+    bot.onText((/\/getinfo/igm), (msg) => {
+        const u_Id = msg.chat.id;
+        const m_Id = msg.message_id;
+        const Is_Bot = msg.from.is_bot;
+        const f_Name = msg.from.first_name;
+        const u_Name = msg.from.username;
+        const l_Code = msg.from.language_code;
+        const date = msg.date;
+        const text = msg.text;
+
+        function curentDate (){let years = date / 31536000; return  month = (""+years).split(".");}
+
+        bot.sendMessage (u_Id, "Message ID: "  + m_Id + "\n\nFrom: " + "\n User ID: " + u_Id + "\n Is bot: " + Is_Bot +
+            "\n Frist Name: " + f_Name + "\n Username: " + u_Name + "\n Language: " + l_Code + "\n\nDate: " + date + "\nText: " + text + "\n\n" + curentDate())
+
+    })
+
+
+
+
+
+
+
+
 const inlineMenu = [
     {
         title: '👤 Профиль:',

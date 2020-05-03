@@ -1,6 +1,10 @@
 const TelegramBot = require('node-telegram-bot-api'); // node js зависимость
+const config = ('./config')
+const helper = ('./helper.js')
+
+
 const TOKEN = '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo'
-const bot = new TelegramBot(TOKEN, { //объект на который мы можем навешивать наши обработчики событий.
+const bot = new TelegramBot(TOKEN, {
     polling: {
         interval: 300, // мил.сек. будет проходить между запросами клиента на сервер
         autoStart: true, // если юзер давал команду, но бот был выключен, тогда при включении бот обработает команду
@@ -9,7 +13,8 @@ const bot = new TelegramBot(TOKEN, { //объект на который мы м�
         }
     }
 });
-const debug = require("./helpers")/*  Polling - технология для связи клиента с сервером. Мы как клиент запускаем на сервере тг. сервис который ожидает обновлений*/
+const debug = require("./helper.js")
+const mMenu  = require("../mainMenu.js")/*  Polling - технология для связи клиента с сервером. Мы как клиент запускаем на сервере тг. сервис который ожидает обновлений*/
 bot.on("polling_error", (errors) => console.log(errors)); // выводим в консоль ошибки обращения бота к апи телеграм
 
 let search = {value: "/search", text: "🔎 Поиск"}
@@ -19,7 +24,7 @@ let popular = {value: "/popular", text: "🌟 Популярное"}
 var inDev = "Раздел в разработке"
 
 
-bot.onText((/\/start/), (msg) => {// экранируем /start & /go
+bot.onText((/\/start/igm), (msg) => {// экранируем /start & /go
     const userId = msg.chat.id;
     const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
     bot.sendMessage(userId, greeting, mainMenu)
@@ -45,6 +50,26 @@ bot.onText(/⚙ Настройки/, (msg) => {
     bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
 })
 
+bot.onText(/\/getinfo/igm, (msg) => {
+        const u_Id = msg.chat.id;
+        const m_Id = msg.message_id;
+        const Is_Bot = msg.from.is_bot;
+        const f_Name = msg.from.first_name;
+        const u_Name = msg.from.username;
+        const l_Code = msg.from.language_code;
+        const date = msg.date;
+        const text = msg.text;
+
+        function curentDate (){let years = date / 31536000; return  month = (""+years).split(".");}
+
+        bot.sendMessage (u_Id, "Message ID: "  + m_Id + "\n\nFrom: " + "\n User ID: " + u_Id + "\n Is bot: " + Is_Bot +
+            "\n Frist Name: " + f_Name + "\n Username: " + u_Name + "\n Language: " + l_Code + "\n\nDate: " + date + "\nText: " + text + "\n\n" + curentDate())
+
+    })
+
+
+
+// Главное меню
 const mainMenu = {
     reply_markup: {
         keyboard: [
@@ -258,7 +283,7 @@ const alphabetRU = {
                 },
                 {
                     text: '0-9',
-                    callback_data: 'RU_0-9'
+                    callback_data: 'Letter_chars'
                 },
                 {
                     text: '🔙',
@@ -274,119 +299,119 @@ const alphabetEN = {
             [
                 {
                     text: 'A',
-                    callback_data: '1'
+                    callback_data: 'EN_A'
                 },
                 {
                     text: 'B',
-                    callback_data: '2'
+                    callback_data: 'EN_B'
                 },
                 {
                     text: 'C',
-                    callback_data: '2'
+                    callback_data: 'EN_C'
                 },
                 {
                     text: 'D',
-                    callback_data: '2'
+                    callback_data: 'EN_D'
                 },
                 {
                     text: 'E',
-                    callback_data: '2'
+                    callback_data: 'EN_E'
                 },
                 {
                     text: 'F',
-                    callback_data: '2'
+                    callback_data: 'EN_F'
                 },
                 {
                     text: 'G',
-                    callback_data: '1'
+                    callback_data: 'EN_G'
                 },
             ],
             [
                 {
                     text: 'H',
-                    callback_data: '2'
+                    callback_data: 'EN_H'
                 },
                 {
                     text: 'I',
-                    callback_data: '2'
+                    callback_data: 'EN_I'
                 },
                 {
                     text: 'J',
-                    callback_data: '2'
+                    callback_data: 'EN_J'
                 },
                 {
                     text: 'K',
-                    callback_data: '2'
+                    callback_data: 'EN_k'
                 },
                 {
                     text: 'L',
-                    callback_data: '2'
+                    callback_data: 'EN_L'
                 },
                 {
                     text: 'M',
-                    callback_data: '1'
+                    callback_data: 'EN_M'
                 },
                 {
                     text: 'N',
-                    callback_data: '2'
+                    callback_data: 'EN_N'
                 },
             ],
             [
 
                 {
                     text: 'O',
-                    callback_data: '2'
+                    callback_data: 'EN_O'
                 },
                 {
                     text: 'P',
-                    callback_data: '2'
+                    callback_data: 'EN_P'
                 },
                 {
                     text: 'Q',
-                    callback_data: '2'
+                    callback_data: 'EN_Q'
                 },
                 {
                     text: 'R',
-                    callback_data: '2'
+                    callback_data: 'EN_R'
                 },
                 {
                     text: 'S',
-                    callback_data: '1'
+                    callback_data: 'EN_S'
                 },
                 {
                     text: 'T',
-                    callback_data: '2'
+                    callback_data: 'EN_T'
                 },
                 {
                     text: 'U',
-                    callback_data: '2'
+                    callback_data: 'EN_U'
                 },
             ],
             [
 
                 {
                     text: 'V',
-                    callback_data: '2'
+                    callback_data: 'EN_V'
                 },
                 {
                     text: 'W',
-                    callback_data: '2'
+                    callback_data: 'EN_W'
                 },
                 {
                     text: 'X',
-                    callback_data: '2'
+                    callback_data: 'EN_X'
                 },
                 {
                     text: 'Y',
-                    callback_data: '1'
+                    callback_data: 'EN_Y'
                 },
                 {
                     text: 'Z',
-                    callback_data: '2'
+                    callback_data: 'EN_Z'
                 },
                 {
                     text: '0-9',
-                    callback_data: '2'
+                    callback_data: 'Letter_chars'
                 },
                 {
                     text: '🔙',
@@ -396,6 +421,7 @@ const alphabetEN = {
         ]
     }
 }
+
 
 // Выбор языка
 bot.on('callback_query', (query) => {
@@ -416,9 +442,6 @@ bot.on('callback_query', (query) => {
     let id = query.message.chat.id
 
     switch (query.data) {
-        case 'Letter_back':
-            bot.sendMessage(id, 'Выберите язык на котором будем искать исполнителя', searchMenu)
-            break;
         case 'RU_А':
             bot.sendMessage(id, 'Музыкальные коллективы на букву "А":', {
                     reply_markup: {
@@ -571,7 +594,7 @@ bot.on('callback_query', (query) => {
                     inline_keyboard: [
                         [
                             {
-                                text: inDev,
+                                text: 'Не существует исполнителей на букву "Ё"',
                                 url: 'https://t.me'
                             }
                         ],
@@ -1036,8 +1059,636 @@ bot.on('callback_query', (query) => {
     }
 })
 
+// Выбор зарубежного исполнителя
+bot.on('callback_query', (query) => {
+    let id = query.message.chat.id
 
-bot.on("polling_error", (err) => console.log(err));
+    switch (query.data) {
+        case 'Letter_back':
+            bot.sendMessage(id, 'Выберите язык поиска:', searchMenu)
+            break;
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "A":', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'ABBA',
+                                    url: 'https://t.me/joinchat/AAAAAFASBQTfBs1Q-pPsbQ'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'AC/DC',
+                                    url: 'https://t.me/joinchat/AAAAAEtqfb3fvjAQZ8a05Q'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Aerosmith',
+                                    url: 'https://t.me/joinchat/AAAAAFgUsF1-0I6LwLpmoQ'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'The Animals',
+                                    url: 'https://t.me/joinchat/AAAAAFdOGk23UU5HkejnDg'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Anthrax',
+                                    url: 'https://t.me/joinchat/AAAAAFiRw0PH-C_w2Z4LGg'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Architects',
+                                    url: 'https://t.me/joinchat/AAAAAFFP_GKnysNRHwYK0g'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Avicii',
+                                    url: 'https://t.me/joinchat/AAAAAEqGPvPUT7RDjB6MXQ'
+                                }
+                            ]
+
+                        ]
+                    }
+                }
+            )
+            break
+        case 'EN_B':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "B":', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'The Beatles',
+                                    url: 'https://t.me/joinchat/AAAAAEc1IXffplwx1uSiTA'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Bon Jovi',
+                                    url: 'https://t.me/joinchat/AAAAAFZ77v2slUx4vTXJ8Q'
+                                }
+                            ],
+
+                            [
+                                {
+                                    text: 'Boney M.',
+                                    url: 'https://t.me/joinchat/AAAAAFTGqib6SEuwQ6RMXw'
+                                }
+                            ]
+                        ]
+                    }
+                }
+            )
+            break
+        case 'EN_C':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "C":', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'Предложи свою группу на букву "С" в разделе "Обратная связь"',
+                                    url: 'https://t.me'
+                                }
+                            ]
+                        ]
+                    }
+                }
+            )
+            break
+        case 'EN_D':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "D":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Dio',
+                                url: 'https://t.me/joinchat/AAAAAFHN2vzkxOLxi1MueA'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'The Doors',
+                                url: 'https://t.me/joinchat/AAAAAFIUHpkN4j13eZtCVg'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Д":', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'Дискотека Авария',
+                                    url: 'https://t.me/joinchat/AAAAAEeKTOLCtoJph8h-_w'
+                                }
+                            ],
+                            [
+                                {
+                                    text: 'Друга Ріка',
+                                    url: 'https://t.me/joinchat/AAAAAFO8rkssKyonctLMfg'
+                                }
+                            ]
+                        ]
+                    }
+                }
+            )
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Е":', {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                {
+                                    text: 'Ева',
+                                    url: 'https://t.me/joinchat/AAAAAFXmmwgDDYzJ99XOmQ'
+                                }
+                            ]
+                        ]
+                    }
+                }
+            )
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ё":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ],
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ж":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Жуки́',
+                                url: 'https://t.me/joinchat/AAAAAFGeWBidCLUb4Eld9A'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "З":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Запрещённые барабанщики',
+                                url: 'https://t.me/joinchat/AAAAAFNYQ9oaPZo_brWOMQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Зве́ри',
+                                url: 'https://t.me/joinchat/AAAAAEvZEFSMVNDHAOGUFg'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Земля́не',
+                                url: 'https://t.me/joinchat/AAAAAFbS0vfFF2GSvQM_Kw'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "И":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Й":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "К":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Каста',
+                                url: 'https://t.me/joinchat/AAAAAFGbL_9JMprFEsWCww'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'КимаКима',
+                                url: 'https://t.me/joinchat/AAAAAFFR8lEgpTh0l-0Cgg'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Кино́',
+                                url: 'https://t.me/joinchat/AAAAAFHHZ14sUT9fZKminA'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Кипе́лов',
+                                url: 'https://t.me/joinchat/AAAAAEkvD3lRFwQN-HwCzw'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Король и Шут',
+                                url: 'https://t.me/joinchat/AAAAAEl7Fy8-_N1iwmcipQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Красная плесень',
+                                url: 'https://t.me/joinchat/AAAAAEoazEbCq-N8A95M4w'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Кровосто́к',
+                                url: 'https://t.me/joinchat/AAAAAEqHZVMe80j6_3LDMQ'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Л":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Ленингра́д',
+                                url: 'https://t.me/joinchat/AAAAAFVd7ja74lXafi6PCQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Любэ́',
+                                url: 'https://t.me/joinchat/AAAAAFJk0jr8xaTV45Z1hg'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Ляпис Трубецкой',
+                                url: 'https://t.me/joinchat/AAAAAFQTMEWfRydX7TK29A'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "М":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Машина времени',
+                                url: 'https://t.me/joinchat/AAAAAFcX45CjUa1vuRtiZA'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Мумий Тролль',
+                                url: 'https://t.me/joinchat/AAAAAFgeF8f_QnAj-Grkvw'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Н":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Наут́илус ',
+                                url: 'https://t.me/joinchat/AAAAAFZYISpxP-yZ_Lgo1A'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Нейромонах Феофан',
+                                url: 'https://t.me/joinchat/AAAAAFksQqqSexSxIXnOUA'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "О":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Один в каноэ',
+                                url: 'https://t.me/joinchat/AAAAAETZM5zgw1DiQB8e7g'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Океан Ельзи',
+                                url: 'https://t.me/joinchat/AAAAAFDLAPWZtCy5bSvcCw'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Отпетые мошенники',
+                                url: 'https://t.me/joinchat/AAAAAFRBCt0g-6R7eN9Z0w'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "П":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Парк Го́рького',
+                                url: 'https://t.me/joinchat/AAAAAE_zXFZMsQHWcL0KOQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Плач Єремії',
+                                url: 'https://t.me/joinchat/AAAAAEWVBuNsodpZICYugA'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Порнофильмы',
+                                url: 'https://t.me/joinchat/AAAAAFCMUXfiXWmstA8aHw'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Р":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "C":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Се́верный Флот',
+                                url: 'https://t.me/joinchat/AAAAAFR0EwQjmJiHS1E5CA'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'СКАЙ',
+                                url: 'https://t.me/joinchat/AAAAAFdquY01_zycl34jhQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Скрябін',
+                                url: 'https://t.me/joinchat/AAAAAE_yUPC0dwZJpFz6GQ'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Сплин',
+                                url: 'https://t.me/joinchat/AAAAAExodDxlTSJLgWhGrw'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Т":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'ТІК',
+                                url: 'https://t.me/joinchat/AAAAAFdpGZBKcIsl4hCrfg'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "У":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Умка и Броневик',
+                                url: 'https://t.me/joinchat/AAAAAEgtrpxaN0jEEoof2g'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Успешная группа',
+                                url: 'https://t.me/joinchat/AAAAAFYudL-lc0zk1I8LUQ'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ф":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Х":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Хлеб',
+                                url: 'https://t.me/joinchat/AAAAAFW6JTqAWV9BkWb4Qw'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Хуй забей',
+                                url: 'https://t.me/joinchat/AAAAAEfwmG9JQPOOqinpTg'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ц":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ч":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Чёрный Обели́ск',
+                                url: 'https://t.me/joinchat/AAAAAEhIf4GfAJyhz7lJ7A'
+                            }
+                        ],
+                        [
+                            {
+                                text: 'Чиж & Co',
+                                url: 'https://t.me/joinchat/AAAAAEu3d--qNS1pnLBoRQ'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ш":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Щ":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Э":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Ю":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: 'Ю-Питер',
+                                url: 'https://t.me/joinchat/AAAAAE6CR9YkfvVkJrSD_A'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+        case 'EN_A':
+            bot.sendMessage(id, 'Музыкальные коллективы на букву "Я":', {
+                reply_markup: {
+                    inline_keyboard: [
+                        [
+                            {
+                                text: inDev,
+                                url: 'https://t.me'
+                            }
+                        ]
+                    ]
+                }
+            })
+            break
+    }
+})
+
+
+bot.on("polling_error", (err) => console.log(err))
 console.log("All ok!")
-
-
