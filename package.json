@@ -1,10 +1,10 @@
 {
   "name": "telegram-bot-intro",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.1.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,16 @@
   "dependencies": {
     "config": "^3.3.1",
     "moment": "^2.25.1",
+    "node-telegram-bot-api": "^0.40.0",
     "telegraf-inline-menu": "^4.0.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Desablero/GraphyDog.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Desablero/GraphyDog/issues"
+  },
+  "homepage": "https://github.com/Desablero/GraphyDog#readme",
+  "description": ""
 }

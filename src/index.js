@@ -1,80 +1,60 @@
-const TelegramBot = require('node-telegram-bot-api'); // node js зависимость
-const config = ('./config')
+const TelegramBot = require('node-telegram-bot-api')
+const config = require('./config')
+const bot = new TelegramBot(config.TOKEN, {
+    polling: {
+        autoStart: true
+    }
+});
+const mMenu = require('./mainMenu')
 const helper = ('./helper.js')
 
 
-const TOKEN = '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo'
-const bot = new TelegramBot(TOKEN, {
-    polling: {
-        interval: 300, // мил.сек. будет проходить между запросами клиента на сервер
-        autoStart: true, // если юзер давал команду, но бот был выключен, тогда при включении бот обработает команду
-        params: { // специальный объект для таймаута
-            timeout: 10 // отвечает за таймаут между запросами
-        }
-    }
-});
-const debug = require("./helper.js")
-const mMenu  = require("../mainMenu.js")/*  Polling - технология для связи клиента с сервером. Мы как клиент запускаем на сервере тг. сервис который ожидает обновлений*/
-bot.on("polling_error", (errors) => console.log(errors)); // выводим в консоль ошибки обращения бота к апи телеграм
-
-let search = {value: "/search", text: "🔎 Поиск"}
-let setting = {value: "/setting", text: "⚙ Настройки"}
-let profile = {value: "/profile", text: "👤 Профиль"}
-let popular = {value: "/popular", text: "🌟 Популярное"}
-var inDev = "Раздел в разработке"
-
-
-bot.onText((/\/start/igm), (msg) => {// экранируем /start & /go
+// Команды
+bot.onText((/\/start/igm), (msg) => {
     const userId = msg.chat.id;
     const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
     bot.sendMessage(userId, greeting, mainMenu)
 })
-
 bot.onText(/👤 Профиль/, (msg) => {
     const userId = msg.chat.id;
     bot.sendMessage(userId, 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', profileMenu)
 })
-
 bot.onText(/🔎 Поиск/, (msg) => {
     const userId = msg.chat.id;
     bot.sendMessage(userId, 'Выберите язык на котором будем искать исполнителя', searchMenu)
 })
-
 bot.onText(/🌟 Популярное/, (msg) => {
     const userId = msg.chat.id;
     bot.sendMessage(userId, 'Часто запрашиваемые дискографии:', popularMenu)
 })
-
 bot.onText(/⚙ Настройки/, (msg) => {
     const userId = msg.chat.id;
     bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
 })
-
 bot.onText(/\/getinfo/igm, (msg) => {
-        const u_Id = msg.chat.id;
-        const m_Id = msg.message_id;
-        const Is_Bot = msg.from.is_bot;
-        const f_Name = msg.from.first_name;
-        const u_Name = msg.from.username;
-        const l_Code = msg.from.language_code;
-        const date = msg.date;
-        const text = msg.text;
+    const u_Id = msg.chat.id;
+    const m_Id = msg.message_id;
+    const Is_Bot = msg.from.is_bot;
+    const f_Name = msg.from.first_name;
+    const u_Name = msg.from.username;
+    const l_Code = msg.from.language_code;
+    const date = msg.date;
+    const text = msg.text;
 
-        function curentDate (){let years = date / 31536000; return  month = (""+years).split(".");}
+    function curentDate (){let years = date / 31536000; return  month = (""+years).split(".");}
 
-        bot.sendMessage (u_Id, "Message ID: "  + m_Id + "\n\nFrom: " + "\n User ID: " + u_Id + "\n Is bot: " + Is_Bot +
-            "\n Frist Name: " + f_Name + "\n Username: " + u_Name + "\n Language: " + l_Code + "\n\nDate: " + date + "\nText: " + text + "\n\n" + curentDate())
+    bot.sendMessage (u_Id, "Message ID: "  + m_Id + "\n\nFrom: " + "\n User ID: " + u_Id + "\n Is bot: " + Is_Bot +
+        "\n Frist Name: " + f_Name + "\n Username: " + u_Name + "\n Language: " + l_Code + "\n\nDate: " + date + "\nText: " + text + "\n\n" + curentDate())
 
-    })
-
+})
 
 
 // Главное меню
 const mainMenu = {
     reply_markup: {
         keyboard: [
-            [profile.text, search.text],
-            [popular.text, setting.text]
+            ['👤 Профиль', '🔎 Поиск'],
+            ['🌟 Популярное','⚙ Настройки' ]
         ]
     }
 }
@@ -84,7 +64,7 @@ const profileMenu = {
             [
                 {
                     text: '👑 Премиум аккаунт',
-                    callback_data: "2" // вместо callback_data можно юзать url:
+                    callback_data: "2"
                 },
                 {
                     text: '👥 Реферальная система',
@@ -421,6 +401,7 @@ const alphabetEN = {
         ]
     }
 }
+const inDev = "Раздел в разработке"
 
 
 // Выбор языка
@@ -1689,6 +1670,4 @@ bot.on('callback_query', (query) => {
     }
 })
 
-
-bot.on("polling_error", (err) => console.log(err))
-console.log("All ok!")
+bot.on("polling_error", (errors) => console.log(errors));
