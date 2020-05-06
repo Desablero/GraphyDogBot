@@ -6,403 +6,36 @@ const bot = new TelegramBot(config.TOKEN, {
     }
 });
 const mMenu = require('./mainMenu')
-const helper = ('./helper.js')
+const helper = require ('./helper.js')
+const inDev = "Раздел в разработке"
+
+// ======================================================
+helper.logStart()
+
 
 
 // Команды
-bot.onText((/\/start/igm), (msg) => {
-    const userId = msg.chat.id;
-    const greeting = `Привет, ` + msg.from.first_name + '! Меня зовут Графи 🐶 Граф! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя'
-    bot.sendMessage(userId, greeting, mainMenu)
+bot.onText((/\/start/i), (msg) => {
+    const hello = `Привет, ${msg.from.first_name}, меня зовут Графи 🐶! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя.`;
+    bot.sendMessage(helper.getChatId(msg), hello, mMenu.mainMenu)
 })
 bot.onText(/👤 Профиль/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', profileMenu)
+    bot.sendMessage(helper.getChatId(msg), 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', mMenu.profileMenu)
 })
 bot.onText(/🔎 Поиск/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Выберите язык на котором будем искать исполнителя', searchMenu)
+    bot.sendMessage(helper.getChatId(msg), 'Выберите язык на котором будем искать исполнителя', mMenu.searchMenu)
 })
 bot.onText(/🌟 Популярное/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Часто запрашиваемые дискографии:', popularMenu)
+    bot.sendMessage(helper.getChatId(msg), 'Часто запрашиваемые дискографии:', mMenu.popularMenu)
 })
 bot.onText(/⚙ Настройки/, (msg) => {
-    const userId = msg.chat.id;
-    bot.sendMessage(userId, 'Что настраиваем?', settingMenu)
+    bot.sendMessage(helper.getChatId(msg), 'Что настраиваем?', mMenu.settingMenu)
 })
 bot.onText(/\/getinfo/igm, (msg) => {
-    const u_Id = msg.chat.id;
-    const m_Id = msg.message_id;
-    const Is_Bot = msg.from.is_bot;
-    const f_Name = msg.from.first_name;
-    const u_Name = msg.from.username;
-    const l_Code = msg.from.language_code;
-    const date = msg.date;
-    const text = msg.text;
-
-    function curentDate (){let years = date / 31536000; return  month = (""+years).split(".");}
-
-    bot.sendMessage (u_Id, "Message ID: "  + m_Id + "\n\nFrom: " + "\n User ID: " + u_Id + "\n Is bot: " + Is_Bot +
-        "\n Frist Name: " + f_Name + "\n Username: " + u_Name + "\n Language: " + l_Code + "\n\nDate: " + date + "\nText: " + text + "\n\n" + curentDate())
-
+    var date = new Date();
+    bot.sendMessage (helper.getChatId(msg), "Message ID: "  + helper.getMessageId(msg) + "\n\nFrom: " + "\n User ID: " + helper.getChatId(msg) +
+        "\n Frist Name: " + helper.getFirstName(msg) + "\n Username: " + helper.getUserName(msg) + "\n Language: " + helper.getLanguageCode(msg) + "\n Is bot: " + helper.getIsBot(msg) + "\n\nDate: " + helper.getDate() + "\nText: " + helper.getText(msg)+ "\n\n")
 })
-
-
-// Главное меню
-const mainMenu = {
-    reply_markup: {
-        keyboard: [
-            ['👤 Профиль', '🔎 Поиск'],
-            ['🌟 Популярное','⚙ Настройки' ]
-        ]
-    }
-}
-const profileMenu = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: '👑 Премиум аккаунт',
-                    callback_data: "2"
-                },
-                {
-                    text: '👥 Реферальная система',
-                    callback_data: '2'
-                }
-            ],
-            [
-                {
-                    text: '⭐ Избранные дискографии',
-                    callback_data: '3'
-                }
-            ]
-        ]
-    }
-}
-const searchMenu = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: '🇬🇧 EN',
-                    callback_data: 'EN_Alphabet'
-                },
-                {
-                    text: '🇷🇺 RU',
-                    callback_data: 'RU_Alphabet'
-                }
-            ]
-        ]
-    }
-}
-const popularMenu = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: inDev,
-                    callback_data: '1'
-                }
-            ]
-        ]
-    }
-}
-const settingMenu = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: '🇷🇺 Сменить язык',
-                    callback_data: '1'
-                },
-                {
-                    text: '📝 Обратная связь',
-                    callback_data: '2'
-                }
-            ]
-        ]
-    }
-}
-const alphabetRU = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: 'А',
-                    callback_data: 'RU_А'
-                },
-                {
-                    text: 'Б',
-                    callback_data: 'RU_Б'
-                },
-                {
-                    text: 'В',
-                    callback_data: 'RU_В'
-                },
-                {
-                    text: 'Г',
-                    callback_data: 'RU_Г'
-                },
-                {
-                    text: 'Д',
-                    callback_data: 'RU_Д'
-                },
-                {
-                    text: 'Е',
-                    callback_data: 'RU_Е'
-                },
-                {
-                    text: 'Ё',
-                    callback_data: 'RU_Ё'
-                },
-            ],
-            [
-                {
-                    text: 'Ж',
-                    callback_data: 'RU_Ж'
-                },
-                {
-                    text: 'З',
-                    callback_data: 'RU_З'
-                },
-                {
-                    text: 'И',
-                    callback_data: 'RU_И'
-                },
-                {
-                    text: 'Й',
-                    callback_data: 'RU_Й'
-                },
-                {
-                    text: 'К',
-                    callback_data: 'RU_К'
-                },
-                {
-                    text: 'Л',
-                    callback_data: 'RU_Л'
-                },
-                {
-                    text: 'М',
-                    callback_data: 'RU_М'
-                }
-
-            ],
-            [
-                {
-                    text: 'Н',
-                    callback_data: 'RU_Н'
-                },
-                {
-                    text: 'О',
-                    callback_data: 'RU_О'
-                },
-                {
-                    text: 'Р',
-                    callback_data: 'RU_Р'
-                },
-                {
-                    text: 'П',
-                    callback_data: 'RU_П'
-                },
-                {
-                    text: 'С',
-                    callback_data: 'RU_С'
-                },
-                {
-                    text: 'Т',
-                    callback_data: 'RU_Т'
-                },
-                {
-                    text: 'У',
-                    callback_data: 'RU_У'
-                }
-
-            ],
-            [
-                {
-                    text: 'Ф',
-                    callback_data: 'RU_Ф'
-                },
-                {
-                    text: 'Х',
-                    callback_data: 'RU_Х'
-                },
-                {
-                    text: 'Ц',
-                    callback_data: 'RU_Ц'
-                },
-                {
-                    text: 'Ч',
-                    callback_data: 'RU_Ч'
-                },
-                {
-                    text: 'Ш',
-                    callback_data: 'RU_Ш'
-                },
-                {
-                    text: 'Щ',
-                    callback_data: 'RU_Щ'
-                },
-                {
-                    text: 'Э',
-                    callback_data: 'RU_Э'
-                }
-
-
-            ],
-
-            [
-                {
-                    text: 'Ю',
-                    callback_data: 'RU_Ю'
-                },
-                {
-                    text: 'Я',
-                    callback_data: 'RU_Я'
-                },
-                {
-                    text: '0-9',
-                    callback_data: 'Letter_chars'
-                },
-                {
-                    text: '🔙',
-                    callback_data: 'Letter_back'
-                }
-            ],
-        ]
-    }
-}
-const alphabetEN = {
-    reply_markup: {
-        inline_keyboard: [
-            [
-                {
-                    text: 'A',
-                    callback_data: 'EN_A'
-                },
-                {
-                    text: 'B',
-                    callback_data: 'EN_B'
-                },
-                {
-                    text: 'C',
-                    callback_data: 'EN_C'
-                },
-                {
-                    text: 'D',
-                    callback_data: 'EN_D'
-                },
-                {
-                    text: 'E',
-                    callback_data: 'EN_E'
-                },
-                {
-                    text: 'F',
-                    callback_data: 'EN_F'
-                },
-                {
-                    text: 'G',
-                    callback_data: 'EN_G'
-                },
-            ],
-            [
-                {
-                    text: 'H',
-                    callback_data: 'EN_H'
-                },
-                {
-                    text: 'I',
-                    callback_data: 'EN_I'
-                },
-                {
-                    text: 'J',
-                    callback_data: 'EN_J'
-                },
-                {
-                    text: 'K',
-                    callback_data: 'EN_k'
-                },
-                {
-                    text: 'L',
-                    callback_data: 'EN_L'
-                },
-                {
-                    text: 'M',
-                    callback_data: 'EN_M'
-                },
-                {
-                    text: 'N',
-                    callback_data: 'EN_N'
-                },
-            ],
-            [
-
-                {
-                    text: 'O',
-                    callback_data: 'EN_O'
-                },
-                {
-                    text: 'P',
-                    callback_data: 'EN_P'
-                },
-                {
-                    text: 'Q',
-                    callback_data: 'EN_Q'
-                },
-                {
-                    text: 'R',
-                    callback_data: 'EN_R'
-                },
-                {
-                    text: 'S',
-                    callback_data: 'EN_S'
-                },
-                {
-                    text: 'T',
-                    callback_data: 'EN_T'
-                },
-                {
-                    text: 'U',
-                    callback_data: 'EN_U'
-                },
-            ],
-            [
-
-                {
-                    text: 'V',
-                    callback_data: 'EN_V'
-                },
-                {
-                    text: 'W',
-                    callback_data: 'EN_W'
-                },
-                {
-                    text: 'X',
-                    callback_data: 'EN_X'
-                },
-                {
-                    text: 'Y',
-                    callback_data: 'EN_Y'
-                },
-                {
-                    text: 'Z',
-                    callback_data: 'EN_Z'
-                },
-                {
-                    text: '0-9',
-                    callback_data: 'Letter_chars'
-                },
-                {
-                    text: '🔙',
-                    callback_data: 'Letter_back'
-                }
-            ],
-        ]
-    }
-}
-const inDev = "Раздел в разработке"
-
 
 // Выбор языка
 bot.on('callback_query', (query) => {
@@ -410,10 +43,10 @@ bot.on('callback_query', (query) => {
 
     switch (query.data) {
         case 'EN_Alphabet':
-            bot.sendMessage(id, "Выберите (или введите) с какой буквы начинается название исполнителя: ", alphabetEN);
+            bot.sendMessage(id, "Выберите (или введите) с какой буквы начинается название исполнителя: ", mMenu.alphabetEN);
             break;
         case 'RU_Alphabet':
-            bot.sendMessage(id, "Выберите (или введите) с какой буквы начинается название исполнителя: ", alphabetRU);
+            bot.sendMessage(id, "Выберите (или введите) с какой буквы начинается название исполнителя: ", mMenu.alphabetRU);
             break;
     }
 })
@@ -537,6 +170,12 @@ bot.on('callback_query', (query) => {
             bot.sendMessage(id, 'Музыкальные коллективы на букву "Д":', {
                     reply_markup: {
                         inline_keyboard: [
+                            [
+                                {
+                                    text: 'ДДТ',
+                                    url: 'https://t.me/joinchat/AAAAAFO1zkgKCIE-RDnWxw'
+                                }
+                            ],
                             [
                                 {
                                     text: 'Дискотека Авария',
