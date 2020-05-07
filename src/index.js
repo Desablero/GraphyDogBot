@@ -16,8 +16,11 @@ helper.logStart()
 
 // Команды
 bot.onText((/\/start/i), (msg) => {
-    const hello = `Привет, ${msg.from.first_name}, меня зовут Графи 🐶! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню "Поиск" и выбери желаемого исполнителя.`;
-    bot.sendMessage(helper.getChatId(msg), hello, mMenu.mainMenu)
+    //let userName = `<a href="https://t.me/${helper.getUserName(msg)}">${msg.from.first_name}</a>`
+    let userName = `<b>${msg.from.first_name}</b>`
+    let search = `<i>"Поиск"</i>`;
+    const greeting = `Привет ${userName}, меня зовут Графи 🐶! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню ${search} и выбери желаемого исполнителя.`
+        bot.sendMessage(helper.getChatId(msg), greeting, {parse_mode: 'HTML'}, mMenu.mainMenu)
 })
 bot.onText(/👤 Профиль/, (msg) => {
     bot.sendMessage(helper.getChatId(msg), 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', mMenu.profileMenu)
@@ -693,14 +696,14 @@ bot.on('callback_query', (query) => {
                         inline_keyboard: [
                             [
                                 {
-                                    text: 'ABBA',
-                                    url: 'https://t.me/joinchat/AAAAAFASBQTfBs1Q-pPsbQ'
+                                    text: config.lib.abba[0],
+                                    url: config.lib.abba[1]
                                 }
                             ],
                             [
                                 {
-                                    text: 'AC/DC',
-                                    url: 'https://t.me/joinchat/AAAAAEtqfb3fvjAQZ8a05Q'
+                                    text: config.lib.acdc[0],
+                                    url: config.lib.acdc[1]
                                 }
                             ],
                             [
