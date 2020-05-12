@@ -1,5 +1,6 @@
 module.exports = {
-    TOKEN: '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo',
+    tokenGraphy: '894771621:AAHu1NFYyc5QKWH_5m5QQGco7VEVZUkXDUo',
+    tokenFeedback: '1273972291:AAEBdrllJkUGi_SQXvPGpJWY8lKZ5ORTDBY',
     admin: '208562435',
     lib: {
         abba: ["ABBA","https://t.me/joinchat/AAAAAFASBQTfBs1Q-pPsbQ"],

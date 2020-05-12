@@ -69,7 +69,7 @@ module.exports = {
                     },
                     {
                         text: '📝 Обратная связь',
-                        callback_data: '2'
+                        url: 'https://t.me/GraphyFeedbackBot'
                     }
                 ]
             ]

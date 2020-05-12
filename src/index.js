@@ -1,6 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api')
+const Telegraf = require('telegraf');
 const config = require('./config')
-const bot = new TelegramBot(config.TOKEN, {
+const bot = new TelegramBot(config.tokenGraphy, {
     polling: {
         autoStart: true
     }
@@ -8,22 +9,21 @@ const bot = new TelegramBot(config.TOKEN, {
 const mMenu = require('./mainMenu')
 const helper = require ('./helper.js')
 const inDev = "Раздел в разработке"
-
 // ======================================================
 helper.logStart()
 
-
+var coutnOfSearch = 3
 
 // Команды
 bot.onText((/\/start/i), (msg) => {
-    //let userName = `<a href="https://t.me/${helper.getUserName(msg)}">${msg.from.first_name}</a>`
     let userName = `<b>${msg.from.first_name}</b>`
-    let search = `<i>"Поиск"</i>`;
-    const greeting = `Привет ${userName}, меня зовут Графи 🐶! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню ${search} и выбери желаемого исполнителя.`
-        bot.sendMessage(helper.getChatId(msg), greeting, {parse_mode: 'HTML'}, mMenu.mainMenu)
+    let search = `<i>"Поиск"</i>`; // mMenu.mainMenu
+    let greeting = `Привет ${userName}, меня зовут Графи 🐶! \nЯ могу найти для тебя любую дискографию из моего списка, просто зайди в меню ${search} и выбери желаемого исполнителя.`
+        bot.sendMessage(helper.getChatId(msg), greeting, {parse_mode: 'HTML'})
+        bot.sendMessage(helper.getChatId(msg), `Количество доступных поисков: ${coutnOfSearch}`, mMenu.mainMenu)
 })
 bot.onText(/👤 Профиль/, (msg) => {
-    bot.sendMessage(helper.getChatId(msg), 'Premium аккаунт: *отключён* \nДоступно дискографий: 3', mMenu.profileMenu)
+    bot.sendMessage(helper.getChatId(msg), `Premium аккаунт: *отключён* \nКоличество доступных поисков: ${coutnOfSearch}`, mMenu.profileMenu)
 })
 bot.onText(/🔎 Поиск/, (msg) => {
     bot.sendMessage(helper.getChatId(msg), 'Выберите язык на котором будем искать исполнителя', mMenu.searchMenu)

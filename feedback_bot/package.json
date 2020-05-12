@@ -1,0 +1,16 @@
+{
+  "name": "telegramFeedBack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "startGraphy": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "iMakeBots.ru",
+  "license": "",
+  "dependencies": {
+    "https-proxy-agent": "^2.2.1",
+    "telegraf": "^3.26.0"
+  }
+}

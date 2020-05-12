@@ -1,33 +1,31 @@
 {
-  "name": "telegram-bot-intro",
-  "version": "2.1.0",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "node ./src/index.js",
-    "dev": "nodemon ./src/index.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.5",
-    "nodemon": "^2.0.3"
+  "author": "@desablero",
+  "bugs": {
+    "url": "https://github.com/Desablero/GraphyDog/issues"
   },
   "dependencies": {
     "config": "^3.3.1",
+    "fs": "0.0.1-security",
     "moment": "^2.25.3",
     "node-telegram-bot-api": "^0.40.0",
+    "telegraf": "^3.38.0",
     "telegraf-inline-menu": "^4.0.0"
   },
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  },
+  "homepage": "https://github.com/Desablero/GraphyDog#readme",
+  "license": "ISC",
+  "main": "src/index.js",
+  "name": "telegram-bot-intro",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Desablero/GraphyDog.git"
   },
-  "bugs": {
-    "url": "https://github.com/Desablero/GraphyDog/issues"
+  "scripts": {
+    "startGraphy": "node ./src/index.js",
+    "startFeedback": "node ./feedback_bot/index.js"
   },
-  "homepage": "https://github.com/Desablero/GraphyDog#readme",
-  "description": ""
+  "version": "2.1.0"
 }
