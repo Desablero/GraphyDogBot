@@ -14,6 +14,16 @@ helper.logStart()
 
 var coutnOfSearch = 3
 
+
+
+function count (i=10 ){i--
+console.log(i)}
+count();
+
+
+
+
+
 // Команды
 bot.onText((/\/start/i), (msg) => {
     let userName = `<b>${msg.from.first_name}</b>`
@@ -57,7 +67,7 @@ bot.on('callback_query', (query) => {
 // Выбор русского исполнителя
 bot.on('callback_query', (query) => {
     let id = query.message.chat.id
-
+if (count > 1)
     switch (query.data) {
         case 'RU_А':
             bot.sendMessage(id, 'Музыкальные коллективы на букву "А":', {

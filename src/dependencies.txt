@@ -1,0 +1,12 @@
+Для создания package.json: npm init
+
+npm i node-telegram-bot-api --save
+
+npm install telegraf
+
+npm install nodemon --save-dev // save-dev указывает на то, что эта библиотека не уйдёт на продакшин, а используется только для разработки
+nodemon нужен для того, чтобы не перезапускать код после редактирования
+
+"https-proxy-agent": "^2.2.1", - для фитбека
+
+npm install: если была удалени папка node_modules, то эта программа импортирует все зависимости которые указаны в package.json > dependencies

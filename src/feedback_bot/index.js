@@ -1,0 +1,68 @@
+// Подключаем модули
+const Telegraf = require('telegraf');
+const TelegramBot = require('node-telegram-bot-api')
+const fs = require('fs')
+const config = require('../config.js')
+const helper = require('../helper.js')
+const AnimationUrl1 = 'https://media.giphy.com/media/ya4eevXU490Iw/giphy.gif'
+// Создаем объект бота
+const bot = new Telegraf(config.tokenFeedback, {
+        // Если надо ходить через прокси - укажите: user, pass, host, port
+        // telegram: { agent: new HttpsProxyAgent('http://user:pass@host:port') }
+    }
+);
+
+// Текстовые настройки
+let replyText = {
+    "helloAdmin": "Привет админ, ждем сообщения от пользователей",
+    "helloUser1": `Приветствую! Отправьте мне сообщение которое хотели бы адресовать разработчику @GraphyDogBot'a. Он ответит вам в ближайшее время.`,
+    "helloUser2": `\n\nДля корректной работы бота вам необходимо в настройках включить функцию "пересылка сообщений" (Настройки > Конфиденциальность > Пересылка сообщений), или добавить этого бота в исключения.`,
+    "replyWrong": "Для ответа пользователю используйте функцию Ответить/Reply."
+};
+// Проверяем пользователя на права
+let isAdmin = (userId) => {
+    return (userId == (config.admin[0]) || (userId == config.admin[1]));
+};
+// Перенаправляем админу от пользователя или уведомляем админа об ошибке
+let forwardToAdmin = (msg) => {
+    if (isAdmin(msg.message.from.id)) {
+
+        msg.reply(replyText.replyWrong);
+    } else {
+        msg.forwardMessage(config.admin[0], msg.from.id, msg.message.id);
+        msg.forwardMessage(config.admin[1], msg.from.id, msg.message.id);
+    }
+};
+// Старт бота
+
+
+bot.start((msg) => {
+    const dogGif = new Promise(function (resolve, reject) {
+        msg.telegram.sendDocument(msg.from.id, {
+            source: __dirname + '/images/call_center.gif',
+            filename: 'call_center.gif'
+        })
+    })
+
+    msg.reply(isAdmin(msg.message.from.id)
+        ? replyText.helloAdmin
+        : replyText.helloUser1 + replyText.helloUser2,
+    dogGif.then() )
+
+})
+
+// Слушаем на наличие объекта message
+bot.on('message', (msg) => {
+    // убеждаемся что это админ ответил на сообщение пользователя
+    if (msg.message.reply_to_message
+        && msg.message.reply_to_message.forward_from
+        && isAdmin(msg.message.from.id)) {
+        // отправляем копию пользователю
+        msg.telegram.sendCopy(msg.message.reply_to_message.forward_from.id, msg.message);
+    } else {
+        // перенаправляем админу
+        forwardToAdmin(msg);
+    }
+});
+// запускаем бот
+bot.launch();

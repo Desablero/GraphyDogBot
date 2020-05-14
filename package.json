@@ -25,7 +25,9 @@
   },
   "scripts": {
     "startGraphy": "node ./src/index.js",
-    "startFeedback": "node ./feedback_bot/index.js"
+    "startGraphyNodemon": "nodemon ./src/index.js",
+    "startFeedback": "node src/feedback_bot/index.js",
+    "startFeedbackNodemon": "nodemon src/feedback_bot/index.js"
   },
   "version": "2.1.0"
 }
