@@ -14,6 +14,7 @@ helper.logStart()
 
 var coutnOfSearch = 3
 
+<<<<<<< HEAD
 
 
 function count (){i=10;  i--
@@ -30,6 +31,8 @@ bot.on('message', msg => {
     })
 })
 
+=======
+>>>>>>> parent of 0bf7525... *minor* [Stable]
 // Команды
 bot.onText((/\/start/i), (msg) => {
         let Text = {
@@ -93,7 +96,7 @@ bot.on('callback_query', (query) => {
 // Выбор русского исполнителя
 bot.on('callback_query', (query) => {
     let id = query.message.chat.id
-if (count > 1)
+
     switch (query.data) {
         case 'RU_А':
             bot.sendMessage(id, 'Музыкальные коллективы на букву "А":', {

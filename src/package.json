@@ -22,10 +22,15 @@
     "url": "git+https://github.com/Desablero/GraphyDog.git"
   },
   "scripts": {
+<<<<<<< HEAD:src/package.json
     "startGraphy": "node index.js",
     "startGraphyNodemon": "nodemon ./src/index.js",
     "startFeedback": "node feedback_bot/index.js",
     "startFeedbackNodemon": "nodemon src/feedback_bot/index.js"
+=======
+    "startGraphy": "node ./src/index.js",
+    "startFeedback": "node ./feedback_bot/index.js"
+>>>>>>> parent of 0bf7525... *minor* [Stable]:package.json
   },
   "version": "2.1.0"
 }
