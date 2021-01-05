@@ -1,0 +1,19 @@
+{
+  "name": "graphydog",
+  "version": "2.0.0",
+  "description": "Telegram bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Desablero/GraphyDog.git"
+  },
+  "author": "Desablero",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Desablero/GraphyDog/issues"
+  },
+  "homepage": "https://github.com/Desablero/GraphyDog#readme"
+}
